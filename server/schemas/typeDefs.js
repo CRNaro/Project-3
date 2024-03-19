@@ -2,11 +2,12 @@ const typeDefs=
 `
 type Employee {
     _id: ID
-    firstName: String
-    lastName: String
-    password: String
-    userName: String
-    adminStatus: String
+    userName: String!
+    firstName: String!
+    lastName: String!
+    email: String!
+    password: String!
+    adminStatus: String!
 }
 type Customer {
     _id: ID
@@ -16,37 +17,39 @@ type Customer {
     email: String
     customerNotes: String
     products: [Product]
+    parts: [Part]
 }
 
 type Product {
     _id: ID
-    type: String
-    make: String
-    model: String
+    manufacturer: String
+    serialNumber: String
+    modelNumber: String
     installDate: String
     warrantyDuration: String
     cost: String
     manual: String
     installationNotes: String
-    installedBy: [Employee]
+    installedBy: String
     service: [Service]
 }
 
 type Service {
-    type: String
+    notes: String
     charge: String
     serviceDate: String
     warrantyDuration:String
     serviceNotes: String
-    product: Product
 }
 
-type Parts {
+type Part {
     _id: ID
     name: String
     partNumber: String
     cost: String
-    parentProduct: Product
+    installDate: String
+    warrantyDuration: String
+    installedBy: String
 }
 type Auth {
     user: Employee,
