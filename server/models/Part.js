@@ -1,17 +1,15 @@
 const { Schema } = require('mongoose');
 
-const serviceSchema = require('./Service');
-
-const productSchema = new Schema({
-    manufacturer: {
+const partSchema = new Schema({
+    name: {
         type: String,
         required: false,
     },
-    serialNumber: {
+    partNumber: {
         type: String,
         required: false,
     },
-    modelNumber: {
+    cost: {
         type: String,
         required: false,
     },
@@ -23,23 +21,10 @@ const productSchema = new Schema({
         type: String,
         required: false,
     },
-    cost: {
-        type: String,
-        required: true,
-    },
-    manual: {
-        type: String,
-        required: true,
-    },
-    installationNotes: {
-        type: String,
-        required: true,
-    },
     installedBy: {
         type: String,
         required: true,
     },
-    service: [serviceSchema],
 });
 
-module.exports = productSchema;
+module.exports = partSchema;
