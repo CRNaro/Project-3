@@ -1,0 +1,22 @@
+
+.customer-card {
+    background-color: rgb(247, 246, 238, 0.5);
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: -10px;
+  }
+
+  .home-card{
+    background-color: rgb(247, 246, 238, 0.5);
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  }

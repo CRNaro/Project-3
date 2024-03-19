@@ -18,7 +18,9 @@ function Home() {
             <Card className="w-100  customer-card">
                 <Card.Body>
                     <Card.Title>Customer Nav</Card.Title>
-                    <Card.Text>Fill in customer nav buttons here</Card.Text>
+                    <Card.Text>Fill in customer nav buttons here
+                        <Link to='/customer'>Customer Data Page</Link>
+                    </Card.Text>
                 </Card.Body>
             </Card>
             </Col>

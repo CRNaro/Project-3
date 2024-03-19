@@ -1,0 +1,11 @@
+
+.footer-card {
+    background-color: rgb(247, 246, 238, 0.5);
+    height: 8vh;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }

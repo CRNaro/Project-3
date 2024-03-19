@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import App from './App.jsx'
 import Home from './pages/Home.jsx'
+import Customer from './pages/Customer.jsx'
 //--import pages here--
 
 
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Routes>
       <Route path='/' element={<App />} />
       <Route index element={<Home />} />
+      <Route path='/customer' element={<Customer />} />
       {/* ADD routes to pages here */}
     </Routes>
   </Router>
