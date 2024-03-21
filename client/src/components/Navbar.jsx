@@ -3,7 +3,7 @@ import React from 'react';
 import { Container, Row, Col, Card, Navbar, Nav, Modal, Tab } from 'react-bootstrap';
 import LoginForm from './LoginForm';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
+import logo from '../assets/HeartlineStove.jpg';
 
 function NavBar() {
   const [showModal, setShowModal] = useState(false);
