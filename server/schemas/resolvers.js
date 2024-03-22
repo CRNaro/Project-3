@@ -82,28 +82,28 @@ const resolvers = {
                     }
                     throw new AuthenticationError('You need to be logged in!');
                     assignProductsToCustomer: async (parent, { customerId, products }, context) => {
-                        if (context.user) {
-                            const user = await User.findOne({ _id: context.user._id });
-                            if (!user) {
-                                throw new UserInputError('User not found');
-                            }
-                    
-                            // Find the customer in the user's saved customers
-                            const customer = user.savedCustomers.find(savedCustomer => savedCustomer._id.toString() === customerId);
-                    
-                            if (!customer) {
-                                throw new UserInputError('Customer not found in saved customers');
-                            }
-                    
-                            // Assign products to the customer
-                            customer.products = products;
-                    
-                            await user.save();
-                    
-                            return customer;
-                        }
-                        throw new AuthenticationError('You need to be logged in!');
-                    }
+    if (context.user) {
+        const user = await User.findOne({ _id: context.user._id });
+        if (!user) {
+            throw new UserInputError('User not found');
+        }
+
+        // Find the customer in the user's saved customers
+        const customer = user.savedCustomers.find(savedCustomer => savedCustomer._id.toString() === customerId);
+
+        if (!customer) {
+            throw new UserInputError('Customer not found in saved customers');
+        }
+
+        // Assign products to the customer
+        customer.products = products;
+
+        await user.save();
+
+        return customer;
+    }
+    throw new AuthenticationError('You need to be logged in!');
+}
                     
                 }
                 
