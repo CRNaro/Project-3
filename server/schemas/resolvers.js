@@ -45,72 +45,74 @@ const resolvers = {
             }
             throw new AuthenticationError('You need to be logged in!')
         },
-        findCustomer: async (parent, { customerId }, context) => {
-            if (context.user) {
-                const user = await User.findOne({ _id: context.user._id });
-                if (!user) {
-                    throw new UserInputError('User not found');
-                }
+        // findCustomer: async (parent, { customerId }, context) => {
+        //     if (context.user) {
+        //         const user = await User.findOne({ _id: context.user._id });
+        //         if (!user) {
+        //             throw new UserInputError('User not found');
+        //         }
         
-                // Check if the customer is in the user's saved customers
-                const customer = user.savedCustomers.find(savedCustomer => savedCustomer._id.toString() === customerId);
+        //         // Check if the customer is in the user's saved customers
+        //         const customer = user.savedCustomers.find(savedCustomer => savedCustomer._id.toString() === customerId);
         
-                if (!customer) {
-                    throw new UserInputError('Customer not found in saved customers');
-                }
+        //         if (!customer) {
+        //             throw new UserInputError('Customer not found in saved customers');
+        //         }
         
-                return customer;
-                assignPartsToCustomer: async (parent, { customerId, parts }, context) => {
-                    if (context.user) {
-                        const user = await User.findOne({ _id: context.user._id });
-                        if (!user) {
-                            throw new UserInputError('User not found');
-                        }
+        //         return customer;
+        //         assignPartsToCustomer: async (parent, { customerId, parts }, context) => {
+        //             if (context.user) {
+        //                 const user = await User.findOne({ _id: context.user._id });
+        //                 if (!user) {
+        //                     throw new UserInputError('User not found');
+        //                 }
                 
-                        // Find the customer in the user's saved customers
-                        const customer = user.savedCustomers.find(savedCustomer => savedCustomer._id.toString() === customerId);
+        //                 // Find the customer in the user's saved customers
+        //                 const customer = user.savedCustomers.find(savedCustomer => savedCustomer._id.toString() === customerId);
                 
-                        if (!customer) {
-                            throw new UserInputError('Customer not found in saved customers');
-                        }
+        //                 if (!customer) {
+        //                     throw new UserInputError('Customer not found in saved customers');
+        //                 }
                 
-                        // Assign parts to the customer
-                        customer.parts = parts;
+        //                 // Assign parts to the customer
+        //                 customer.parts = parts;
                 
-                        await user.save();
+        //                 await user.save();
                 
-                        return customer;
-                    }
-                    throw new AuthenticationError('You need to be logged in!');
-                    assignProductsToCustomer: async (parent, { customerId, products }, context) => {
-    if (context.user) {
-        const user = await User.findOne({ _id: context.user._id });
-        if (!user) {
-            throw new UserInputError('User not found');
-        }
 
-        // Find the customer in the user's saved customers
-        const customer = user.savedCustomers.find(savedCustomer => savedCustomer._id.toString() === customerId);
-
-        if (!customer) {
-            throw new UserInputError('Customer not found in saved customers');
-        }
-
-        // Assign products to the customer
-        customer.products = products;
-
-        await user.save();
-
-        return customer;
-    }
-    throw new AuthenticationError('You need to be logged in!');
-}
+        //                 return customer;
+        //             }
+        //             throw new AuthenticationError('You need to be logged in!');
+        //             assignProductsToCustomer: async (parent, { customerId, products }, context) => {
+        //                 if (context.user) {
+        //                     const user = await User.findOne({ _id: context.user._id });
+        //                     if (!user) {
+        //                         throw new UserInputError('User not found');
+        //                     }
                     
-                }
+        //                     // Find the customer in the user's saved customers
+        //                     const customer = user.savedCustomers.find(savedCustomer => savedCustomer._id.toString() === customerId);
+                    
+        //                     if (!customer) {
+        //                         throw new UserInputError('Customer not found in saved customers');
+        //                     }
+                    
+        //                     // Assign products to the customer
+        //                     customer.products = products;
+                    
+        //                     await user.save();
+                    
+        //                     return customer;
+        //                 }
+        //                 throw new AuthenticationError('You need to be logged in!');
+        //             }
+
+                    
+        //         }
                 
-            }
-            throw new AuthenticationError('You need to be logged in!');
-        },
+        //     }
+        //     throw new AuthenticationError('You need to be logged in!');
+        // },
         
     }
   };
