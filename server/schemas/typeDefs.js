@@ -52,8 +52,8 @@ type Part {
     installedBy: String
 }
 type Auth {
-    user: Employee,
     token: ID!
+    employee: Employee
 }
 
 type Query {
@@ -61,7 +61,7 @@ type Query {
 }
 
 type Mutation {
-    login(userName: String!, password: String!): Auth
+    login(email: String!, password: String!): Auth
     addEmployee(firstName: String!, lastName: String!, userName: String!, password: String!, adminStatus: String!): Auth
     addCustomer(firstName: String!, lastName: String!, phoneNumber: Int, email: String, customerNote: String, products: [String]!): Auth
 }
