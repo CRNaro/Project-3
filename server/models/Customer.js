@@ -61,12 +61,11 @@ customerSchema.methods.isCorrectPassword = async function (password) {
     return bcrypt.compare(password, this.password);
 };
 
-// when we query a user, we'll also get another field called `bookCount` with the number of saved books we have
-customerSchema.virtual('products').get(function () {
+customerSchema.virtual('product').get(function () {
     return this.products.length;
 });
 
-customerSchema.virtual('parts').get(function () {
+customerSchema.virtual('part').get(function () {
     return this.parts.length;
 });
 
