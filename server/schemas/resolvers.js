@@ -5,21 +5,19 @@ const { signToken } = require('../utils/auth');
 
 const resolvers = {
     Query: {
-    //     me: async (parent, args, context) => {
-    //         if (context.user) {
-    //             const userData = await Employee.findOne({ _id: context.user._id })
-    //             .select('-__v -password')
-    //             return userData;
-    //         }
-    //         throw new AuthenticationError('Not logged in');
-    //     }
+        me: async (parent, args, context) => {
+            if (context.user) {
+                return await User.findOne({ _id: context.user._id });
+            }
+            throw AuthenticationError;
+        },
     },
     Mutation: {
-        addEmployee: async (parent, {firstName, lastName, userName, password, adminStatus}) => {
-            const employee = await Employee.create(args);
+        addEmployee: async (parent, {firstName, lastName, username, email, password}) => {
+            const employee = await Employee.create({firstName, lastName, username, email, password});
             const token = signToken(employee);
 
-            return { token, user };
+            return { token, employee };
         },
      
         login: async (parent, { email, password }) => {
@@ -27,7 +25,7 @@ const resolvers = {
             if (!employee) {
                 throw new AuthenticationError('Incorrect credentials')
             }
-            const correctPw = await Employee.isCorrectPassword(password);
+            const correctPw = await employee.isCorrectPassword(password);
             if(!correctPw) {
                 throw new AuthenticationError('Incorrect credentials')
             }
