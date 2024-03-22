@@ -27,14 +27,7 @@ const employeeSchema = new Schema(
         password: {
             type: String,
             required: true,
-        },
-        adminStatus: {
-            type: Boolean,
-            default: false,
-            required: true,
-            unique: true,
-          },
-
+        }
     },
 );
 
