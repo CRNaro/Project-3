@@ -5,17 +5,20 @@ export const LOGIN_USER = gql`
     login(email: $email, password: $password) {
       token
       employee {
-       userName
+       username
        email
      }
     }
   }
 `;
 export const ADD_EMPLOYEE = gql`
-  mutation addEmployee($firstName: String!, $lastName: String!, $username: String!, $password: String!) {
-    addEmployee(firstname: $firstName, lastName: $lastname, username: $username, password: $password) {
+  mutation addEmployee($firstName: String!, $lastName: String!, $username: String!, $email: String!, $password: String!) {
+    addEmployee(firstName: $firstName, lastName: $lastName, username: $username, email: $email, password: $password) {
       employee {
         _id
+        firstName
+        lastName
+        email
         username
       }
     }
