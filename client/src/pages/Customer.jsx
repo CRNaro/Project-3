@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import '../styles/Customer.css';
 
 function Customer() {
     return ( 
@@ -37,7 +38,7 @@ function Customer() {
                     </Card>
                     <Row>
                         <Col md={6}>
-                            <Card className="mb-3">
+                            <Card className="mb-3 product-spec-card">
                     <Card.Body>
                         <Card.Title>Product Specs</Card.Title>
                         <Card.Text>
@@ -47,7 +48,7 @@ function Customer() {
                     </Card>
                         </Col>
                         <Col md={6}>
-                            <Card className="mb-3">
+                            <Card className="mb-3 product-info-card">
                     <Card.Body>
                         <Card.Title>Product Info</Card.Title>
                         <Card.Text>
@@ -55,7 +56,7 @@ function Customer() {
                         </Card.Text>
                     </Card.Body>
                     </Card>
-                    <Card>
+                    <Card className="mb-3 customer-notes-card">
                         <Card.Header>
                             <Button variant="link" onClick={() => {/*expand/collapse logic here*/}}>
                                 Expand</Button>
@@ -72,6 +73,7 @@ function Customer() {
                       </Col>
                 </Row>
         </Container>
+        <Footer />
         </>
     );
     }
