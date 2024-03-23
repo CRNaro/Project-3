@@ -5,6 +5,9 @@ import Footer from '../components/Footer';
 import { Container, Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
 import '../styles/Customer.css';
 import '../styles/Home.css';
+import Auth from '../utils/auth';
+import { useLazyQuery  } from '@apollo/client';
+import { customerInfo } from '../utils/queries';
 
 function Customer() {
     const [showModal, setShowModal] = useState(false);
@@ -20,7 +23,21 @@ function Customer() {
         console.log('Form submitted');
     }
 
-    return ( 
+    const [customerSearch, { loading, data }] = useLazyQuery (customerInfo);
+    // example of how to call lazyquery
+//     <div>
+//     {data?.dog && <img src={data.dog.displayImage} />}
+//     <button onClick={() => customerSearch({ variables: { email: 'test1@email.com' } })}>
+//       Click me!
+//     </button>
+//   </div>Customer Notes goes here
+    const userData = data || {};
+
+    if (loading) {
+        return <h2>LOADING...</h2>;
+      }
+
+      return ( 
         <>
         <NavBar />
         <Container fluid className="vh-100  d-flex flex-column mb-6">

@@ -57,6 +57,7 @@ type Auth {
 }
 
 type Query {
+    customerInfo(email: String, lastName: String): Customer
     me: Employee
 }
 
