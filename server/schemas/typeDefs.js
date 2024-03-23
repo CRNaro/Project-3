@@ -56,7 +56,7 @@ type Auth {
 }
 
 type Query {
-    me: Employee
+    customerInfo(email: String, lastName: String): Customer
 }
 
 type Mutation {
