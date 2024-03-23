@@ -22,16 +22,15 @@ function NavBar() {
           </Navbar.Brand>
           <Nav className="me-auto">
             <Link className="nav-link" to="/">Home</Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
-
-             <Nav.Link href="#customer">Contact</Nav.Link>
-             <Nav.Link as={NavLink} to="/customer">Customer Data</Nav.Link>
-            <Nav.Link onClick={() => setShowModal(true)}>Login</Nav.Link>
-
             {/* if user is logged in show saved books and logout */}
             {Auth.loggedIn() ? (
               <>
+                <Nav.Link href="#features">Features</Nav.Link>
+                <Nav.Link href="#pricing">Pricing</Nav.Link>
+                <Nav.Link href="#customer">Contact</Nav.Link>
+                <Nav.Link as={NavLink} to="/customer">Customer Data</Nav.Link>
+                <Nav.Link as={NavLink} to="/newCustomer">New Customer</Nav.Link>
+                {/* if user is logged in show saved books and logout */}
                 <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
               </>
             ) : (

@@ -25,6 +25,7 @@ const SignupForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
+    
     // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -73,7 +74,7 @@ const SignupForm = () => {
             value={userFormData.firstName}
             required
           />
-          <Form.Control.Feedback type='invalid'>Username is required!</Form.Control.Feedback>
+          <Form.Control.Feedback type='invalid'>First name is required!</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group className='mb-3'>
@@ -86,7 +87,7 @@ const SignupForm = () => {
             value={userFormData.lastName}
             required
           />
-          <Form.Control.Feedback type='invalid'>Username is required!</Form.Control.Feedback>
+          <Form.Control.Feedback type='invalid'>Last name is required!</Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group className='mb-3'>

@@ -26,8 +26,8 @@ export const ADD_EMPLOYEE = gql`
 `;
 
 export const ADD_CUSTOMER = gql`
-  mutation addCustomer($firstName: String!, $lastName: String!, $phoneNumber: Int, $email: String, $customerNotes: STRING, $products: ProductData!) {
-    addCustomer(firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, email: $email, customerNotes: $customerNaotes, products: $products) {
+  mutation addCustomer($firstName: String!, $lastName: String!, $phoneNumber: String, $email: String) {
+    addCustomer(firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, email: $email) {
       _id
     }
   }

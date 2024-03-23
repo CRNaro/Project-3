@@ -27,7 +27,15 @@ const employeeSchema = new Schema(
         password: {
             type: String,
             required: true,
-        }
+        },
+
+        // //Added back in becasue of issues with db. Added sparse to allow null values
+        // adminStatus: {
+        //     type: String, //--Please leave as string for the time being-- Req until admin status is implemented
+        //     default: false,
+        //     required: true,
+        //     sparse: true
+        //   },
     },
 );
 
