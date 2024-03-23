@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.7",
-    "@apollo/server": "^4.10.1"
+    "@apollo/server": "^4.10.1",
+    "dotenv": "^16.4.5"
   }
 }
