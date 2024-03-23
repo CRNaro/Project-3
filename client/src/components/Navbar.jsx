@@ -2,8 +2,11 @@ import { useState } from 'react';
 import React from 'react';
 import { Container, Row, Col, Card, Navbar, Nav, Modal, Tab } from 'react-bootstrap';
 import LoginForm from './LoginForm';
+
+import { Link, NavLink } from 'react-router-dom';
+
 import SignupForm from './SignupForm';
-import { Link } from 'react-router-dom';
+
 import logo from '../assets/HeartlineStove.jpg';
 
 import Auth from '../utils/auth';
@@ -21,6 +24,11 @@ function NavBar() {
             <Link className="nav-link" to="/">Home</Link>
             <Nav.Link href="#features">Features</Nav.Link>
             <Nav.Link href="#pricing">Pricing</Nav.Link>
+
+             <Nav.Link href="#customer">Contact</Nav.Link>
+             <Nav.Link as={NavLink} to="/customer">Customer Data</Nav.Link>
+            <Nav.Link onClick={() => setShowModal(true)}>Login</Nav.Link>
+
             {/* if user is logged in show saved books and logout */}
             {Auth.loggedIn() ? (
               <>
@@ -29,6 +37,7 @@ function NavBar() {
             ) : (
               <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
             )}
+
           </Nav>
         </Container>
       </Navbar>

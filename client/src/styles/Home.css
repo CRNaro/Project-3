@@ -1,22 +1,24 @@
 
-.customer-card {
-    background-color: rgb(247, 246, 238, 0.5);
-    height: 80vh;
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    margin-right: -10px;
-  }
+.custom-container {
+  background-color: rgb(247, 246, 238, 0.5);
+   max-width: 93%;
+  
+}
 
-  .home-card{
-    background-color: rgb(247, 246, 238, 0.5);
-    height: 80vh;
+.home-card {
+    
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-  }
+  
+    max-height: 75vh;
+   
+}
+
+  .home-card img{
+   
+    padding: 20px;
+    flex-grow: 1;
+    object-fit: cover;
+    max-height: 60vh;
+   }
+

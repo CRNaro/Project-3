@@ -1,11 +1,12 @@
 
 .footer-card {
-    background-color: rgb(247, 246, 238, 0.5);
+  
     height: 8vh;
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
   }
+  @media (max-width: 320px) { /* Adjust this value based on when you want the change to occur */
+  .footer-card {
+    height: 4vh; /* Reduce the height on small screens */
+  }
+}
