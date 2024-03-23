@@ -5,18 +5,18 @@ const { signToken } = require('../utils/auth');
 
 const resolvers = {
     Query: {
-<<<<<<< HEAD
         customerInfo: async (parent, {email, lastName}, context) => {
             if (context.user && email) {
                 return await Customer.findOne({ email });
             }
             if (context.user && lastName) {
                 return await Customer.findOne({ lastName });
-=======
+            }
+            throw AuthenticationError;
+        },
         me: async (parent, args, context) => {
             if (context.user) {
-                return await user.findOne({ _id: context.user._id });
->>>>>>> beb22ed4a71706e80435613a6b5367763c4413aa
+                return await Employee.findOne({ _id: context.user._id });
             }
             throw AuthenticationError;
         },
