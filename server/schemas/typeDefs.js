@@ -2,12 +2,11 @@ const typeDefs=
 `
 type Employee {
     _id: ID
-    userName: String!
+    username: String!
     firstName: String!
     lastName: String!
     email: String!
     password: String!
-    adminStatus: String!
 }
 type Customer {
     _id: ID
@@ -62,7 +61,7 @@ type Query {
 
 type Mutation {
     login(email: String!, password: String!): Auth
-    addEmployee(firstName: String!, lastName: String!, userName: String!, password: String!, adminStatus: String!): Auth
+    addEmployee(firstName: String!, lastName: String!, username: String!, email: String!, password: String!): Auth
     addCustomer(firstName: String!, lastName: String!, phoneNumber: Int, email: String, customerNote: String, products: [String]!): Auth
 }
 `;

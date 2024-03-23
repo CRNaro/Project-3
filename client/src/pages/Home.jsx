@@ -2,12 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+
+import { Container, Form, Button, Row, Col, Card } from 'react-bootstrap';
 import storePic from '../assets/StorePic.jpg';
 import "../styles/Home.css";
 import "../styles/Customer.css";
 import "../styles/Footer.css";
 
+
+import Auth from '../utils/auth';
 
 
 function Home() {
