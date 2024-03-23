@@ -2,7 +2,7 @@ import { useState } from 'react';
 import React from 'react';
 import { Container, Row, Col, Card, Navbar, Nav, Modal, Tab } from 'react-bootstrap';
 import LoginForm from './LoginForm';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import logo from '../assets/HeartlineStove.jpg';
 
 function NavBar() {
@@ -18,7 +18,8 @@ function NavBar() {
             <Link className="nav-link" to="/">Home</Link>
             <Nav.Link href="#features">Features</Nav.Link>
             <Nav.Link href="#pricing">Pricing</Nav.Link>
-
+             <Nav.Link href="#customer">Contact</Nav.Link>
+             <Nav.Link as={NavLink} to="/customer">Customer Data</Nav.Link>
             <Nav.Link onClick={() => setShowModal(true)}>Login</Nav.Link>
           </Nav>
         </Container>

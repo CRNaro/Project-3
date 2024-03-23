@@ -1,18 +1,40 @@
+/* NOTE:CRN .customer-nav-card in Home.css */
 
+.customer-row {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 20px;
+  /* Add any other styles you want for this row */
+}
+
+.product-row {
+  display: flex;
+  align-items: stretch;
+  margin-top: 20px;
+  /* Add any other styles you want for this row */
+}
 .customer-info-card {
     background-color: rgb(247, 246, 238, 0.5);
     margin-top: 20px;
+    max-height: 50vh;
   }
 
   .product-spec-card {
     background-color: rgb(247, 246, 238, 0.5);
-    height: 64vh;
+    max-height: 50vh;
 }
 
   .product-info-card {
     background-color: rgb(247, 246, 238, 0.5);
+    max-height: 50vh;
   }
 
   .customer-info-card {
     background-color: rgb(247, 246, 238, 0.5);
+  }
+
+  .customer-notes-card {
+    background-color: rgb(247, 246, 238, 0.1);
+    margin-top: 20px;
+    max-height: 50vh;
   }
