@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
 import '../styles/Customer.css';
 import '../styles/Home.css';
 import Auth from '../utils/auth';
@@ -19,12 +19,24 @@ function Customer() {
 //       Click me!
 //     </button>
 //   </div>Customer Notes goes here
-    const userData = data || {};
 
-    if (loading) {
-        return <h2>LOADING...</h2>;
-      }
+    const [showModal, setShowModal] = useState(false);
 
+        const handleOpenModal = () => {
+        setShowModal(true);
+    };
+    const handleCloseModal = () => {
+        setShowModal(false);
+    }
+    const handleFormSubmit = (event) => {
+        event.preventDefault();
+        console.log('Form submitted');
+    }
+const userData = data || {};
+
+if (loading) {
+    return <h2>LOADING...</h2>;
+  }
     return ( 
         <>
         <NavBar />
@@ -36,6 +48,10 @@ function Customer() {
                         <Col md={8}>
                             <Card className="w-100 h-100 mb-3 customer-info-card flex-grow-1">
                                 <Card.Body> 
+                                    <div className="d-flex justify-content-start">
+                                        <Button variant="primary" 
+                                        onClick={handleOpenModal}>Find Customer</Button>
+                                    </div>
                                     <Card.Title>Customer Information</Card.Title>
                                     <Card.Text>
                                     //     <div>
@@ -87,6 +103,22 @@ function Customer() {
                 </Col>
             </Row>
         </Container>
+        <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal.Header closeButton>
+                <Modal.Title>Find Customer</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form onSubmit={handleFormSubmit}>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Label>Customer Name</Form.Label>
+                        <Form.Control type="text" placeholder="Enter customer name" />
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                        Submit
+                    </Button>
+                </Form>
+            </Modal.Body>
+        </Modal>
         </>
     );
 }
