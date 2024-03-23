@@ -10,13 +10,14 @@ type Employee {
 }
 type Customer {
     _id: ID
-    firstName: String
-    lastName: String
-    phoneNumber: Int
+    firstName: String!
+    lastName: String!
+    phoneNumber: String
     email: String
     customerNotes: String
     products: [Product]
     parts: [Part]
+    
 }
 
 type Product {
@@ -62,7 +63,7 @@ type Query {
 type Mutation {
     login(email: String!, password: String!): Auth
     addEmployee(firstName: String!, lastName: String!, username: String!, email: String!, password: String!): Auth
-    addCustomer(firstName: String!, lastName: String!, phoneNumber: Int, email: String, customerNote: String, products: [String]!): Auth
+    addCustomer(firstName: String!, lastName: String!, phoneNumber: String, email: String): Employee
 }
 `;
 

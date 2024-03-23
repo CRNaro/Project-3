@@ -10,16 +10,6 @@ import { useLazyQuery  } from '@apollo/client';
 import { customerInfo } from '../utils/queries';
 
 function Customer() {
-
-    const [customerSearch, { loading, data }] = useLazyQuery (customerInfo);
-    // example of how to call lazyquery
-//     <div>
-//     {data?.dog && <img src={data.dog.displayImage} />}
-//     <button onClick={() => customerSearch({ variables: { email: 'test1@email.com' } })}>
-//       Click me!
-//     </button>
-//   </div>Customer Notes goes here
-
     const [showModal, setShowModal] = useState(false);
 
         const handleOpenModal = () => {
@@ -32,12 +22,22 @@ function Customer() {
         event.preventDefault();
         console.log('Form submitted');
     }
-const userData = data || {};
 
-if (loading) {
-    return <h2>LOADING...</h2>;
-  }
-    return ( 
+    const [customerSearch, { loading, data }] = useLazyQuery (customerInfo);
+    // example of how to call lazyquery
+//     <div>
+//     {data?.dog && <img src={data.dog.displayImage} />}
+//     <button onClick={() => customerSearch({ variables: { email: 'test1@email.com' } })}>
+//       Click me!
+//     </button>
+//   </div>Customer Notes goes here
+    const userData = data || {};
+
+    if (loading) {
+        return <h2>LOADING...</h2>;
+      }
+
+      return ( 
         <>
         <NavBar />
         <Container fluid className="vh-100  d-flex flex-column mb-6">
@@ -54,12 +54,7 @@ if (loading) {
                                     </div>
                                     <Card.Title>Customer Information</Card.Title>
                                     <Card.Text>
-                                    //     <div>
-//     {data?.dog && <img src={data.dog.displayImage} />}
-//     <button onClick={() => {const token = Auth.loggedIn() ? Auth.getToken() : null; customerSearch({ variables: { email: 'test1@email.com' } })}}>
-//       Click me!
-//     </button>
-//   </div>Customer Notes goes here
+                                        Customer Information goes here
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
@@ -73,6 +68,7 @@ if (loading) {
                                 <Card.Body className="mb-3">
                                     <Card.Title>Customer Notes</Card.Title>
                                     <Card.Text>
+                                        Customer Notes goes here
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
