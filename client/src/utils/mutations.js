@@ -14,6 +14,7 @@ export const LOGIN_USER = gql`
 export const ADD_EMPLOYEE = gql`
   mutation addEmployee($firstName: String!, $lastName: String!, $username: String!, $email: String!, $password: String!) {
     addEmployee(firstName: $firstName, lastName: $lastName, username: $username, email: $email, password: $password) {
+      token
       employee {
         _id
         firstName
@@ -26,9 +27,13 @@ export const ADD_EMPLOYEE = gql`
 `;
 
 export const ADD_CUSTOMER = gql`
-  mutation addCustomer($firstName: String!, $lastName: String!, $phoneNumber: String, $email: String) {
-    addCustomer(firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, email: $email) {
-      _id
-    }
+mutation Mutation($firstName: String!, $lastName: String!, $phoneNumber: Float!, $email: String!) {
+  addCustomer(firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber, email: $email) {
+    _id
+    firstName
+    lastName
+    phoneNumber
+    email
   }
-`;
+}
+`
