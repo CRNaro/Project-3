@@ -7,7 +7,7 @@ import { ADD_CUSTOMER } from '../utils/mutations'
 import { Form, Button, Alert } from 'react-bootstrap';
 
 const NewCustomerForm = () => {
-    const [userFormData, setUserFormData] = useState({ firstName: '', lastName: '', phoneNumber: 0, email: '' });
+    const [userFormData, setUserFormData] = useState({ firstName: '', lastName: '', phoneNumber: '', email: '' });
     const [showAlert, setShowAlert] = useState(false);
     const [validated] = useState(false);
     const [addCustomer] = useMutation(ADD_CUSTOMER)
@@ -46,13 +46,13 @@ const NewCustomerForm = () => {
             setShowAlert(true);
         }
 
-        // setUserFormData({
-        //     firstName: '',
-        //     lastName: '',
-        //     phoneNumber: '',
-        //     email: '',
+        setUserFormData({
+            firstName: '',
+            lastName: '',
+            phoneNumber: '',
+            email: '',
 
-        // });
+        });
     }
 
     return (
