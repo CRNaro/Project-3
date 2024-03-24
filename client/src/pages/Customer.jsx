@@ -20,10 +20,16 @@ function Customer() {
     }
     const handleFormSubmit = (event) => {
         event.preventDefault();
+        const customerIdentifier = event.target.elements.formBasicEmail.value;
+        console.log('submit form with identifier: ',customerIdentifier);
+        customerSearch({ variables: { email: customerIdentifier, lastName: customerIdentifier } });
         console.log('Form submitted');
     }
 
+
     const [customerSearch, { loading, data }] = useLazyQuery (customerInfo);
+
+console.log('Data: ', data);
     // example of how to call lazyquery
 //     <div>
 //     {data?.dog && <img src={data.dog.displayImage} />}
@@ -31,7 +37,8 @@ function Customer() {
 //       Click me!
 //     </button>
 //   </div>Customer Notes goes here
-    const userData = data || {};
+    const userData = data?.customerInfo || {};
+    console.log(userData);
 
     if (loading) {
         return <h2>LOADING...</h2>;
@@ -54,7 +61,10 @@ function Customer() {
                                     </div>
                                     <Card.Title>Customer Information</Card.Title>
                                     <Card.Text>
-                                        Customer Information goes here
+                                    Name: {data?.customerInfo?.firstName} {data?.customerInfo?.lastName}
+                                    Phone: {data?.customerInfo?.phoneNumber}
+                                    Email: {data?.customerInfo?.email}
+                                  
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
@@ -68,7 +78,7 @@ function Customer() {
                                 <Card.Body className="mb-3">
                                     <Card.Title>Customer Notes</Card.Title>
                                     <Card.Text>
-                                        Customer Notes goes here
+                                    Notes: {data?.customerInfo?.customerNotes}
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
@@ -76,25 +86,59 @@ function Customer() {
                     </Row>
                     <Row className="product-row flex-grow-1 d-flex-1">
                         <Col md={6} className="d-flex flex-column">
-                            <Card className="mb-3 h-100 product-spec-card flex-grow-1">
+                            {data?.customerInfo?.products?.length > 0 ? 
+                            data.customerInfo.products.map((product) => (
+                            <Card key={product._id}className="mb-3 h-100 product-spec-card flex-grow-1">
                                 <Card.Body>
                                     <Card.Title>Product Owned</Card.Title>
                                     <Card.Text>
-                                        Product Specs goes here
+                                    Product: {product.manufacturer} {product.modelNumber}
+                                    Serial Number: {product.serialNumber}
+                                    Install Date: {product.installDate}
+                                    Warranty Duration: {product.warrantyDuration}
+                                    Cost: {product.cost}
+                                    Manual: {product.manual}
+                                    Installation Notes: {product.installationNotes}
+                                    Installed By: {product.installedBy}
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>  
+                            )) : Array.from({ length: 3 }).map((_, index) => (
+                            <Card key={index} className="mb-3 h-100 product-spec-card flex-grow-1">
+                                <Card.Body>
+                                    <Card.Title>Product Owned</Card.Title>
+                                    <Card.Text>
+                                    Product:
+                                    Serial Number:
+                                    Install Date:
+                                    Warranty Duration:
+                                    Cost:
+                                    Manual:
+                                    Installation Notes:
+                                    Installed By:
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
+                            ))}
                         </Col>
-                        <Col md={6} className="d-flex flex-column">
-                            <Card className="mb-3 h-100 product-info-card flex-grow-1">
+                        {/* CRN May Not need */}
+                        {/* <Col md={6} className="d-flex flex-column">
+                            {data?.customerInfo?.parts.map((part, index) => (
+                            <Card key={part._id}className="mb-3 h-100 product-info-card flex-grow-1">
                                 <Card.Body>
                                     <Card.Title>Product Specs</Card.Title>
                                     <Card.Text>
-                                        Product Info goes here
+                                    Part: {part.name}
+                                    Part Number: {part.partNumber}
+                                    Cost: {part.cost}
+                                    Install Date: {part.installDate}
+                                    Warranty Duration: {part.warrantyDuration}
+                                    Installed By: {part.installedBy}
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        </Col>
+                            ))}
+                        </Col> */}
                     </Row>  
                 </Col>
             </Row>
@@ -107,7 +151,7 @@ function Customer() {
                 <Form onSubmit={handleFormSubmit}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Customer Name</Form.Label>
-                        <Form.Control type="text" placeholder="Enter customer name" />
+                        <Form.Control type="text" placeholder="Enter customer last name or email" />
                     </Form.Group>
                     <Button variant="primary" type="submit">
                         Submit
