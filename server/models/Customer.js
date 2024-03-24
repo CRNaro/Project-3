@@ -32,7 +32,7 @@ const customerSchema = new Schema(
         },
         customerNotes: {
             type: String,
-            required: true,
+            required: false,
         },
         // set savedBooks to be an array of data that adheres to the bookSchema
         products: [productSchema],
@@ -46,15 +46,6 @@ const customerSchema = new Schema(
     }
 );
 
-// hash user password
-customerSchema.pre('save', async function (next) {
-    if (this.isNew || this.isModified('password')) {
-        const saltRounds = 10;
-        this.password = await bcrypt.hash(this.password, saltRounds);
-    }
-
-    next();
-});
 
 // custom method to compare and validate password for logging in
 customerSchema.methods.isCorrectPassword = async function (password) {

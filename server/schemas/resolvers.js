@@ -41,14 +41,12 @@ const resolvers = {
             const token = signToken(employee);
             return { token, employee };
         },
-        addCustomer: async (parent, { customer }, context) => {
+        addCustomer: async (parent, { firstName, lastName, phoneNumber, email }, context) => {
             if (context.user) {
-                const updatedUser = await User.findOneAndUpdate(
-                    { _id: context.user._id },
-                    { $addToSet: {savedCustomers: customer} },
-                    { new: true }
-                )
-                return updatedUser;
+                const customerNotes =''
+                const products = []
+                const parts = []
+                return await Customer.create({firstName, lastName, phoneNumber, email, customerNotes, products, parts})
             }
             throw new AuthenticationError('You need to be logged in!')
         },
