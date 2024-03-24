@@ -34,8 +34,10 @@ const NewCustomerForm = () => {
 
 
         try {
+            let { firstName, lastName, phoneNumber, email } = userFormData
+            phoneNumber = Math.floor(phoneNumber)
             const { data } = await addCustomer({
-                variables: { ...userFormData },
+                variables: { firstName, lastName, phoneNumber, email },
             });
 
 
