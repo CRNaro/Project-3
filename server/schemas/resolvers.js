@@ -6,13 +6,22 @@ const { signToken } = require('../utils/auth');
 const resolvers = {
     Query: {
         customerInfo: async (parent, {email, lastName}, context) => {
-            if (context.user && email) {
-                return await Customer.findOne({ email });
+            if (context.user) {
+                const customer = await Customer.findOne({
+                    $or: [{ email: email }, { lastName: lastName }],
+                });
+                if (customer) {
+                    return customer;
+                }
             }
-            if (context.user && lastName) {
-                return await Customer.findOne({ lastName });
-            }
-            throw AuthenticationError;
+            throw new AuthenticationError('You need to be logged in!');
+            // if (context.user && email) {
+            //     return await Customer.findOne({ email });
+            // }
+            // if (context.user && lastName) {
+            //     return await Customer.findOne({ lastName });
+            // }
+            // throw AuthenticationError;
         },
         me: async (parent, args, context) => {
             if (context.user) {
