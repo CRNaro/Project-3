@@ -50,6 +50,23 @@ const resolvers = {
             }
             throw new AuthenticationError('You need to be logged in!')
         },
+        deleteProduct: async (parent, { productId }, context) => {
+            if (context.user) {
+              // Check if the product exists
+              const product = await Product.findById(productId);
+          
+              if (!product) {
+                throw new Error('Product not found');
+              }
+          
+              // Delete the product
+              await Product.findByIdAndDelete(productId);
+          
+              return product;
+            }
+          
+            throw new AuthenticationError('You need to be logged in!');
+          }
         // findCustomer: async (parent, { customerId }, context) => {
         //     if (context.user) {
         //         const user = await User.findOne({ _id: context.user._id });
