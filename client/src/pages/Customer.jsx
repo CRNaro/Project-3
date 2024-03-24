@@ -6,11 +6,30 @@ import { Container, Row, Col, Card, Button, Modal, Form } from 'react-bootstrap'
 import '../styles/Customer.css';
 import '../styles/Home.css';
 import Auth from '../utils/auth';
-import { useLazyQuery  } from '@apollo/client';
+import { useLazyQuery, useMutation  } from '@apollo/client';
 import { customerInfo } from '../utils/queries';
+// notes saver
+import { UPDATE_CUSTOMER_NOTES } from '../utils/mutations';
+
+
 
 function Customer() {
     const [showModal, setShowModal] = useState(false);
+    // show search results
+    const [showSearchResults, setShowSearchResults] = useState([]);
+    // notes saver
+const [updateCustomerNotes] = useMutation(UPDATE_CUSTOMER_NOTES);
+const [customerNotes, setCustomerNotes] = useState('');
+// notes saver
+const handleSaveNotes = async (event) => {
+    event.preventDefault();
+    const { data: userData } = await updateCustomerNotes({
+        variables: { id: userData._id, customerNotes: customerNotes },
+    });
+    if (updatedData) {
+        setCustomerNotes(updatedData.updateCustomerNotes.customerNotes);
+    }
+};
 
         const handleOpenModal = () => {
         setShowModal(true);
@@ -18,12 +37,14 @@ function Customer() {
     const handleCloseModal = () => {
         setShowModal(false);
     }
-    const handleFormSubmit = (event) => {
+    const handleFormSubmit = async (event) => {
         event.preventDefault();
         const customerIdentifier = event.target.elements.formBasicEmail.value;
         console.log('submit form with identifier: ',customerIdentifier);
-        customerSearch({ variables: { email: customerIdentifier, lastName: customerIdentifier } });
+        const { data } = await customerSearch({ variables: { email: customerIdentifier, lastName: customerIdentifier } });
         console.log('Form submitted');
+        const customerInfo = Array.isArray(data.customerInfo) ? data.customerInfo[0] : [data.customerInfo];
+        setShowSearchResults(data.customerInfo);
     }
 
 
@@ -80,6 +101,9 @@ console.log('Data: ', data);
                                     <Card.Text>
                                     Notes: {data?.customerInfo?.customerNotes}
                                     </Card.Text>
+                                    <textarea value={customerNotes} onChange={(e) => 
+                                        setCustomerNotes(e.target.value)}></textarea>
+                                        <button onClick={handleSaveNotes}>Save Notes</button>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -157,6 +181,13 @@ console.log('Data: ', data);
                         Submit
                     </Button>
                 </Form>
+                {showSearchResults && (   //take .map((customer) =>
+                    <div key={showSearchResults._id}>
+                        <h2>{showSearchResults.firstName} {showSearchResults.lastName}</h2>
+                        <p>{showSearchResults.phoneNumber}</p>
+                        <p>{showSearchResults.email}</p>
+                    </div>
+                )}
             </Modal.Body>
         </Modal>
         </>
