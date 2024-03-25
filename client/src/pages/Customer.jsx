@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import NavBar from '../components/Navbar';
-import Footer from '../components/Footer';
+
 import { Container, Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
 import '../styles/Customer.css';
 import '../styles/Home.css';
@@ -21,7 +20,16 @@ function Customer() {
 const [updateCustomerNotes] = useMutation(UPDATE_CUSTOMER_NOTES);
 const [customerNotes, setCustomerNotes] = useState('');
 
-    const [customerSearch, { loading, data }] = useLazyQuery (customerInfo);
+const [selectedCustomer, setSelectedCustomer] = useState(null);
+
+const [customerSearch, { loading, data }] = useLazyQuery (customerInfo);
+
+const handleClearCustomer = () => {
+    setSelectedCustomer(null);
+    setShowSearchResults([]);
+    setCustomerNotes('');
+}
+
 // notes saver
 const handleSaveNotes = async (event) => {
     event.preventDefault();
@@ -31,14 +39,16 @@ const handleSaveNotes = async (event) => {
     if (updatedData) {
         setCustomerNotes(updatedData.updateCustomerNotes.customerNotes);
     }
+
+
 };
 
-        const handleOpenModal = () => {
-        setShowModal(true);
-    };
-    const handleCloseModal = () => {
-        setShowModal(false);
-    }
+    //     const handleOpenModal = () => {
+    //     setShowModal(true);
+    // };
+    // const handleCloseModal = () => {
+    //     setShowModal(false);
+    // }
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         const customerIdentifier = event.target.elements.formBasicEmail.value;
@@ -47,7 +57,7 @@ const handleSaveNotes = async (event) => {
         console.log('Form submitted');
         const customerInfo = Array.isArray(data.customerInfo) ? data.customerInfo[0] : [data.customerInfo];
         setShowSearchResults(data.customerInfo);
-    }
+}
 
 
 console.log('Data: ', data);
@@ -67,7 +77,7 @@ console.log('Data: ', data);
 
       return ( 
         <>
-        <NavBar />
+
         <Container fluid className="vh-100  d-flex flex-column mb-6">
             <Row className="customer-row flex-grow-1 d-flex-1">
                
@@ -76,17 +86,35 @@ console.log('Data: ', data);
                         <Col md={8}>
                             <Card className="w-100 h-100 mb-3 customer-info-card flex-grow-1">
                                 <Card.Body> 
+                                <Card.Title>Customer Information</Card.Title>
                                     <div className="d-flex justify-content-start">
-                                        <Button variant="primary" 
-                                        onClick={handleOpenModal}>Find Customer</Button>
+                                    <Form onSubmit={handleFormSubmit}>
+                                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                                <Form.Label>Enter Search</Form.Label>
+                                                <Form.Control type="text" placeholder="Last name or email" />
+                                            </Form.Group>
+                                            <Button variant="primary" type="submit">
+                                                Submit
+                                            </Button>
+                                            <Button variant="secondary" onClick={handleClearCustomer}>
+                                            Clear Customer
+                                            </Button>
+                                        </Form>
+                                        {showSearchResults && (
+                                            <div key={showSearchResults._id} style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center'}}>
+                                                <Button variant="link" className="name-button" 
+                                                onClick={() => {setSelectedCustomer(showSearchResults); setShowSearchResults(null);}}>
+                                                {showSearchResults.firstName} {showSearchResults.lastName}</Button>
+                                                <p>{showSearchResults.phoneNumber}</p>
+                                                <p>{showSearchResults.email}</p>
+                                            </div>
+                                        )}
                                     </div>
-                                    <Card.Title>Customer Information</Card.Title>
-                                    <Card.Text>
-                                    Name: {data?.customerInfo?.firstName} {data?.customerInfo?.lastName}
-                                    Phone: {data?.customerInfo?.phoneNumber}
-                                    Email: {data?.customerInfo?.email}
-                                  
-                                    </Card.Text>
+                                   <Card.Subtitle className="search-results">
+                                     <div>Name: {selectedCustomer?.firstName} {selectedCustomer?.lastName}</div>
+                                     <div>Phone: {selectedCustomer?.phoneNumber}</div>
+                                     <div>Email: {selectedCustomer?.email}</div>
+                                     </Card.Subtitle>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -99,7 +127,7 @@ console.log('Data: ', data);
                                 <Card.Body className="mb-3">
                                     <Card.Title>Customer Notes</Card.Title>
                                     <Card.Text>
-                                    Notes: {data?.customerInfo?.customerNotes}
+                                    Notes: {selectedCustomer?.customerNotes}
                                     </Card.Text>
                                     <textarea value={customerNotes} onChange={(e) => 
                                         setCustomerNotes(e.target.value)}></textarea>
@@ -110,21 +138,22 @@ console.log('Data: ', data);
                     </Row>
                     <Row className="product-row flex-grow-1 d-flex-1">
                         <Col md={6} className="d-flex flex-column">
-                            {data?.customerInfo?.products?.length > 0 ? 
-                            data.customerInfo.products.map((product) => (
+                        {selectedCustomer && (selectedCustomer?.products?.length > 0 ? 
+                            selectedCustomer.products.map((product) => (
                             <Card key={product._id}className="mb-3 h-100 product-spec-card flex-grow-1">
-                                <Card.Body>
+                                <Card.Body className="search-results">
                                     <Card.Title>Product Owned</Card.Title>
-                                    <Card.Text>
-                                    Product: {product.manufacturer} {product.modelNumber}
-                                    Serial Number: {product.serialNumber}
-                                    Install Date: {product.installDate}
-                                    Warranty Duration: {product.warrantyDuration}
-                                    Cost: {product.cost}
-                                    Manual: {product.manual}
-                                    Installation Notes: {product.installationNotes}
-                                    Installed By: {product.installedBy}
-                                    </Card.Text>
+                                    
+                                    <p>Product: {product.manufacturer}</p> 
+                                    <p>Model Number: {product.modelNumber}</p>
+                                    <p>Serial Number: {product.serialNumber}</p>
+                                    <p>Install Date: {product.installDate}</p>
+                                    <p>Warranty Duration: {product.warrantyDuration}</p>
+                                    <p>Cost: {product.cost}</p>
+                                    <p>Manual: {product.manual}</p>
+                                    <p>Installation Notes: {product.installationNotes}</p>
+                                    <p>Installed By: {product.installedBy}</p>
+                                   
                                 </Card.Body>
                             </Card>  
                             )) : Array.from({ length: 3 }).map((_, index) => (
@@ -143,6 +172,7 @@ console.log('Data: ', data);
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
+                            )
                             ))}
                         </Col>
                         {/* CRN May Not need */}
@@ -167,7 +197,7 @@ console.log('Data: ', data);
                 </Col>
             </Row>
         </Container>
-        <Modal show={showModal} onHide={handleCloseModal}>
+        {/* <Modal show={showModal} onHide={handleCloseModal}>
             <Modal.Header closeButton>
                 <Modal.Title>Find Customer</Modal.Title>
             </Modal.Header>
@@ -189,8 +219,8 @@ console.log('Data: ', data);
                     </div>
                 )}
             </Modal.Body>
-        </Modal>
-        </>
+        </Modal> */}
+        </> 
     );
 }
 

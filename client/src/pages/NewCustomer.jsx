@@ -10,9 +10,8 @@ import '../styles/Home.css';
 function NewCustomer() {
     return (
         <>
-        <NavBar />
         <NewCustomerForm />
-        <Footer />
+       
         </>
     )
 }

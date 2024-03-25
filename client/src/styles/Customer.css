@@ -16,17 +16,17 @@
 .customer-info-card {
     background-color: rgb(247, 246, 238, 0.5);
     margin-top: 20px;
-    max-height: 50vh;
+    max-height: auto;
   }
 
   .product-spec-card {
     background-color: rgb(247, 246, 238, 0.5);
-    max-height: 50vh;
+    max-height: auto;
 }
 
   .product-info-card {
     background-color: rgb(247, 246, 238, 0.5);
-    max-height: 50vh;
+    max-height: auto;
   }
 
   .customer-info-card {
@@ -38,3 +38,18 @@
     margin-top: 20px;
     max-height: 50vh;
   }
+.name-button {
+  color: black;
+  text-decoration: none;
+  position: relative;
+  top: -8px
+}
+
+  .name-button:hover {
+    color: blue; /
+    cursor: pointer; 
+}
+
+.search-results{
+  flex-direction: column;
+}
