@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import NavBar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 import { Container, Form, Button, Row, Col, Card } from 'react-bootstrap';
@@ -16,7 +15,6 @@ import Auth from '../utils/auth';
 function Home() {
   return (
     <div className=" d-flex flex-column vh-100 custom-container">
-      <NavBar />
       <Container fluid className="flex-grow-1 d-flex flex-column m-3">
         <Row className="flex-grow-1" >
           

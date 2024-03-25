@@ -67,6 +67,7 @@ type Mutation {
     addCustomer(firstName: String!, lastName: String!, phoneNumber: Float!, email: String!): Customer
     deleteProduct(productId: String!): Customer
     addProduct(customerId: String!, manufacturer: String, serialNumber: String, modelNumber: String, installDate: String, warrantyDuration: String, cost: String, manual: String, installationNotes: String, installedBy: String): Customer
+    saveNote( customerId: String!, customerNotes: String!):Customer
 }
 
 `;

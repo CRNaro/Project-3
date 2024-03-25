@@ -20,11 +20,13 @@ function Customer() {
     // notes saver
 const [updateCustomerNotes] = useMutation(UPDATE_CUSTOMER_NOTES);
 const [customerNotes, setCustomerNotes] = useState('');
+
+    const [customerSearch, { loading, data }] = useLazyQuery (customerInfo);
 // notes saver
 const handleSaveNotes = async (event) => {
     event.preventDefault();
     const { data: userData } = await updateCustomerNotes({
-        variables: { id: userData._id, customerNotes: customerNotes },
+        variables: { ...customerNotes,  },
     });
     if (updatedData) {
         setCustomerNotes(updatedData.updateCustomerNotes.customerNotes);
@@ -47,8 +49,6 @@ const handleSaveNotes = async (event) => {
         setShowSearchResults(data.customerInfo);
     }
 
-
-    const [customerSearch, { loading, data }] = useLazyQuery (customerInfo);
 
 console.log('Data: ', data);
     // example of how to call lazyquery

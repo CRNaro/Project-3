@@ -25,9 +25,6 @@ function NavBar() {
             {/* if user is logged in show saved books and logout */}
             {Auth.loggedIn() ? (
               <>
-                <Nav.Link href="#features">Features</Nav.Link>
-                <Nav.Link href="#pricing">Pricing</Nav.Link>
-                <Nav.Link href="#customer">Contact</Nav.Link>
                 <Nav.Link as={NavLink} to="/customer">Customer Data</Nav.Link>
                 <Nav.Link as={NavLink} to="/newCustomer">New Customer</Nav.Link>
                 {/* if user is logged in show saved books and logout */}
