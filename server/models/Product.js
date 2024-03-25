@@ -25,21 +25,21 @@ const productSchema = new Schema({
     },
     cost: {
         type: String,
-        required: true,
+        required: false,
     },
     manual: {
         type: String,
-        required: true,
+        required: false,
     },
     installationNotes: {
         type: String,
-        required: true,
+        required: false,
     },
     installedBy: {
         type: String,
-        required: true,
+        required: false,
     },
-    service: [serviceSchema],
+    
 });
 
 module.exports = productSchema;

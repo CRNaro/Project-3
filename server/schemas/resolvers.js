@@ -59,23 +59,43 @@ const resolvers = {
             }
             throw new AuthenticationError('You need to be logged in!')
         },
-        deleteProduct: async (parent, { productId }, context) => {
-            if (context.user) {
-              // Check if the product exists
-              const product = await Product.findById(productId);
-          
-              if (!product) {
-                throw new Error('Product not found');
-              }
-          
-              // Delete the product
-              await Product.findByIdAndDelete(productId);
-          
-              return product;
+        addProduct: async (parent, { customerId, manufacturer, serialNumber, modelNumber, installDate, warrantyDuration, cost, manual, installationNotes, installedBy  }, context) => {
+            if (manufacturer) {
+              return Customer.findOneAndUpdate(
+                {
+                  _id: customerId
+                },
+                {
+                  $addToSet: {
+                    products: { manufacturer, serialNumber, modelNumber, installDate, warrantyDuration, cost, manual, installationNotes, installedBy, },
+                  },
+                },
+                {
+                  new: true,
+                  runValidators: true,
+                }
+              );
             }
+            throw AuthenticationError;
+            ('You need to be logged in!');
+          },
+        // deleteProduct: async (parent, { productId }, context) => {
+        //     if (productId) {
+        //       // Check if the product exists
+        //       const product = await Product.findById(productId);
           
-            throw new AuthenticationError('You need to be logged in!');
-          }
+        //       if (!product) {
+        //         throw new Error('Product not found');
+        //       }
+          
+        //       // Delete the product
+        //       await Product.findByIdAndDelete(productId);
+          
+        //       return product;
+        //     }
+          
+        //     throw new AuthenticationError('You need to be logged in!');
+        //   }
         // findCustomer: async (parent, { customerId }, context) => {
         //     if (context.user) {
         //         const user = await User.findOne({ _id: context.user._id });
