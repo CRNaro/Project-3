@@ -39,7 +39,6 @@ const productSchema = new Schema({
         type: String,
         required: true,
     },
-    service: [serviceSchema],
 });
 
 module.exports = productSchema;

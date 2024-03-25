@@ -45,3 +45,11 @@ export const UPDATE_CUSTOMER_NOTES = gql`
     }
   }
 `;
+
+export const SAVE_NOTE = gql`
+  mutation Mutation($customerId: String!, $customerNotes: String!) {
+    saveNote(customerId: $customerId, customerNotes: $customerNotes) {
+      customerNotes
+    }
+  }
+`;
