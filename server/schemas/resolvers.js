@@ -180,7 +180,7 @@ const resolvers = {
     }
   };
   
-  module.exports = resolvers;const { Employee, Customer } = require('../models');
+  module.exports = resolvers;
 
 
 
