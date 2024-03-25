@@ -10,7 +10,6 @@ import "../styles/Footer.css";
 function Home() {
   return (
     <div className=" d-flex flex-column vh-100 custom-container">
-      <NavBar />
       <Container fluid className="flex-grow-1 d-flex flex-column m-3">
         <Row className="flex-grow-1" >
           <Card className="home-card">

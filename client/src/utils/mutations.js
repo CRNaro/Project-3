@@ -37,3 +37,19 @@ mutation Mutation($firstName: String!, $lastName: String!, $phoneNumber: Float!,
   }
 }
 `
+export const UPDATE_CUSTOMER_NOTES = gql`
+  mutation UpdateCustomerNotes($id: ID!, $customerNotes: String!) {
+    updateCustomerNotes(id: $id, customerNotes: $customerNotes) {
+      _id
+      customerNotes
+    }
+  }
+`;
+
+export const SAVE_NOTE = gql`
+  mutation Mutation($customerId: String!, $customerNotes: String!) {
+    saveNote(customerId: $customerId, customerNotes: $customerNotes) {
+      customerNotes
+    }
+  }
+`;
