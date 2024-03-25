@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import App from './App.jsx'
 import Home from './pages/Home.jsx'
-// import Customer from './pages/Customer.jsx'
+import Customer from './pages/Customer.jsx'
 import NewCustomer from './pages/NewCustomer.jsx'
 
 const router = createBrowserRouter([
@@ -17,9 +17,9 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />
-      // }, {
-      //   path: '/customer',
-      //   element: <Customer />
+      }, {
+        path: '/customer',
+        element: <Customer />
       }, {
         path: '/newcustomer',
         element: <NewCustomer />
