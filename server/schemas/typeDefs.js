@@ -65,6 +65,7 @@ type Mutation {
     login(email: String!, password: String!): Auth
     addEmployee(firstName: String!, lastName: String!, username: String!, email: String!, password: String!): Auth
     addCustomer(firstName: String!, lastName: String!, phoneNumber: Float!, email: String!): Customer
+    saveNote( customerId: String!, customerNotes: String!):Customer
 }
 `;
 
