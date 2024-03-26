@@ -92,16 +92,17 @@ const resolvers = {
       throw new AuthenticationError('You need to be logged in!');
     },
     saveNote: async (parent, { customerNotes, customerId }, context) => {
-      if (context.user) {
-        return Customer.findByIdAndUpdate({ _id: customerId }, { customerNotes: customerNotes, },
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
-      }
-      throw AuthenticationError;
-      ('You need to be logged in!');
+        if (context.user) {
+          return Customer.findByIdAndUpdate(
+            { _id: customerId }, 
+            { customerNotes: customerNotes },
+            {
+              new: true,
+              runValidators: true,
+            }
+          );
+        }
+        throw new AuthenticationError('You need to be logged in!');
     },
     // findCustomer: async (parent, { customerId }, context) => {
     //     if (context.user) {

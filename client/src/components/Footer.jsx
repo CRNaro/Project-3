@@ -29,9 +29,12 @@ function Footer() {
                         <Col>
                             <Card className="footer-card border-0" >
                                 <Card.Body style={{ display: 'flex', flexDirection: 'row' }}>
-                                    <Card.Title>Footer</Card.Title>
+                                    <Card.Title>GitHub Links</Card.Title>
                                     <Card.Text>
-                                        <Link to='/about'>About</Link>
+                                        <a href="https://github.com/baldwisj" target="_blank" rel="noopener noreferrer" className="footer-link">baldwisj</a>
+                                        <a href="https://github.com/Irroc" target="_blank" rel="noopener noreferrer" className="footer-link">Irroc</a>
+                                        <a href="https://github.com/AdamLSmith1984" target="_blank" rel="noopener noreferrer" className="footer-link">AdamLSmith1984</a>
+                                        <a href="https://github.com/CRNaro" target="_blank" rel="noopener noreferrer" className="footer-link">CRNaro</a>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
