@@ -13,7 +13,7 @@ import { ADD_PRODUCT } from '../utils/mutations';
 import { DELETE_PRODUCT } from '../utils/mutations';
 
 function Customer() {
-    const [showModal, setShowModal] = useState(false);
+    //const [showModal, setShowModal] = useState(false);
     // show search results
     const [showSearchResults, setShowSearchResults] = useState([]);
     // notes saver
@@ -23,6 +23,8 @@ const [customerNote, setCustomerNotes] = useState('');
 const [selectedCustomer, setSelectedCustomer] = useState(null);
 
 const [customerSearch, { loading, data }] = useLazyQuery (customerInfo);
+
+const [addProduct] = useMutation(ADD_PRODUCT);
 
 const handleClearCustomer = () => {
     setSelectedCustomer(null);
@@ -41,8 +43,6 @@ const handleSaveNotes = async (event) => {
     if (updatedData) {
         setCustomerNotes(updatedData.updateCustomerNotes.customerNotes);
     }
-
-
 };
 
     //     const handleOpenModal = () => {
@@ -61,6 +61,22 @@ const handleSaveNotes = async (event) => {
         setShowSearchResults(data.customerInfo);
 }
 
+const handleAddProduct = async (event) => {
+    event.preventDefault();
+    const productData = {
+        name: 'Product Name',
+        manufacturer: 'Product Manufacturer',
+        serialNumber: 'Product Serial Number',
+        modelNumber: 'Product Model Number',
+    };
+    const { data: productDataResult } = await addProduct({ variables: { ...productData, customerId: selectedCustomer._id} });
+    
+if (productDataResult) {
+    setSelectedCustomer(productDataResult.addProduct);
+} else {
+    console.log('Error adding product');
+}
+};
 
 console.log('Data: ', data);
     // example of how to call lazyquery
@@ -117,7 +133,7 @@ console.log('Data: ', data);
                                      <div>Phone: {selectedCustomer?.phoneNumber}</div>
                                      <div>Email: {selectedCustomer?.email}</div>
                                      </Card.Subtitle>
-                                     <Button className="add-product-button" variant="primary" /* onClick={handleAddProduct} */>    
+                                     <Button className="add-product-button" variant="primary" onClick={handleAddProduct}>    
                                         Add Product
                                      </Button>
                                 </Card.Body>
