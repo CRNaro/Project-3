@@ -10,8 +10,7 @@ import { customerInfo } from '../utils/queries';
 // notes saver
 import { UPDATE_CUSTOMER_NOTES } from '../utils/mutations';
 import { ADD_PRODUCT } from '../utils/mutations';
-
-
+import { DELETE_PRODUCT } from '../utils/mutations';
 
 function Customer() {
     const [showModal, setShowModal] = useState(false);

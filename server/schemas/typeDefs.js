@@ -65,7 +65,7 @@ type Mutation {
     login(email: String!, password: String!): Auth
     addEmployee(firstName: String!, lastName: String!, username: String!, email: String!, password: String!): Auth
     addCustomer(firstName: String!, lastName: String!, phoneNumber: Float!, email: String!): Customer
-    deleteProduct(productId: String!): Customer
+    deleteProduct(customerId: String!, productId: String!,): Customer
     addProduct(customerId: String!, name: String, manufacturer: String, serialNumber: String, modelNumber: String, installDate: String, warrantyDuration: String, cost: String, manual: String, installationNotes: String, installedBy: String): Customer
     saveNote( customerId: String!, customerNotes: String!):Customer
 }
