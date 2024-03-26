@@ -24,7 +24,7 @@ const [selectedCustomer, setSelectedCustomer] = useState(null);
 
 const [customerSearch, { loading, data }] = useLazyQuery (customerInfo);
 
-const [addProduct] = useMutation(ADD_PRODUCT);
+const [addProduct, { data: addProductData }] = useMutation(ADD_PRODUCT);
 
 const [deleteProduct] = useMutation(DELETE_PRODUCT);
 
@@ -66,18 +66,30 @@ const handleSaveNotes = async (event) => {
 
 const handleAddProduct = async (event) => {
     event.preventDefault();
-    const productData = {
-        name: 'Product Name',
-        manufacturer: 'Product Manufacturer',
-        serialNumber: 'Product Serial Number',
-        modelNumber: 'Product Model Number',
-    };
-    
-    if (productDataResult) {
-    setSelectedCustomer(productDataResult.addProduct);
-} else {
-    console.log('Error adding product');
-}
+    const { data:addProductDataResult } = await addProduct({
+        variables: {
+            customerId: selectedCustomer._id,
+            name: "New Product", 
+            manufacturer: "New Manufacturer", 
+            serialNumber: "New Serial Number",
+            modelNumber: "New Model Number",
+            installDate: new Date(),
+            warrantyDuration: "New Warranty Duration",
+            cost: "New Cost",
+            manual: "New Manual",
+            installationNotes: "New Installation Notes",
+            installedBy: "New Installed By"
+        }
+    });
+console.log('adding product', addProductDataResult);
+    if (addProductDataResult) {
+        setSelectedCustomer(prevState => ({
+            ...prevState,
+            products: [...prevState.products, addProductDataResult.addProduct.products[0]]
+        }));
+    } else {
+        console.log('Error adding product');
+    }
 };
 
 const handleDeleteProduct = async (event, productId) => {

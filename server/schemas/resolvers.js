@@ -2,6 +2,7 @@ const { Employee, Customer } = require('../models');
 
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
+const { Types } = require('mongoose');
 
 const resolvers = {
   Query: {
@@ -67,7 +68,7 @@ const resolvers = {
           },
           {
             $addToSet: {
-              products: { name, manufacturer, serialNumber, modelNumber, installDate, warrantyDuration, cost, manual, installationNotes, installedBy, },
+              products: { _id: new Types.ObjectId(),name, manufacturer, serialNumber, modelNumber, installDate, warrantyDuration, cost, manual, installationNotes, installedBy, },
             },
           },
           {
