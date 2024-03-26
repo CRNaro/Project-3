@@ -58,7 +58,7 @@ const handleSaveNotes = async (event) => {
         console.log('submit form with identifier: ',customerIdentifier);
         const { data } = await customerSearch({ variables: { email: customerIdentifier, lastName: customerIdentifier } });
         console.log('Form submitted');
-        const customerInfo = Array.isArray(data.customerInfo) ? data.customerInfo[0] : [data.customerInfo];
+        //const customerInfo = Array.isArray(data.customerInfo) ? data.customerInfo[0] : [data.customerInfo];
         setShowSearchResults(data.customerInfo);
 }
 
@@ -96,10 +96,10 @@ console.log('Data: ', data);
                                                 <Form.Label>Enter Search</Form.Label>
                                                 <Form.Control type="text" placeholder="Last name or email" />
                                             </Form.Group>
-                                            <Button variant="primary" type="submit">
+                                            <Button className="submit-button" variant="primary" type="submit">
                                                 Submit
                                             </Button>
-                                            <Button variant="secondary" onClick={handleClearCustomer}>
+                                            <Button className="clear-customer-button" variant="secondary" onClick={handleClearCustomer}>
                                             Clear Customer
                                             </Button>
                                         </Form>
@@ -109,7 +109,7 @@ console.log('Data: ', data);
                                                 onClick={() => {setSelectedCustomer(showSearchResults); setShowSearchResults(null);}}>
                                                 {showSearchResults.firstName} {showSearchResults.lastName}</Button>
                                                 <p>{showSearchResults.phoneNumber}</p>
-                                                <p>{showSearchResults.email}</p>
+                                                <p>{showSearchResults.email}</p> 
                                             </div>
                                         )}
                                     </div>
@@ -118,7 +118,11 @@ console.log('Data: ', data);
                                      <div>Phone: {selectedCustomer?.phoneNumber}</div>
                                      <div>Email: {selectedCustomer?.email}</div>
                                      </Card.Subtitle>
+                                     <Button className="add-product-button" variant="primary" /* onClick={handleAddProduct} */>    
+                                        Add Product
+                                     </Button>
                                 </Card.Body>
+                               
                             </Card>
                         </Col>
                         <Col md={4}>
@@ -144,9 +148,9 @@ console.log('Data: ', data);
                         {selectedCustomer && (selectedCustomer?.products?.length > 0 ? 
                             selectedCustomer.products.map((product) => (
                             <Card key={product._id}className="mb-3 h-100 product-spec-card flex-grow-1">
+                               
                                 <Card.Body className="search-results">
                                     <Card.Title>Product Owned</Card.Title>
-                                    
                                     <p>Product: {product.manufacturer}</p> 
                                     <p>Model Number: {product.modelNumber}</p>
                                     <p>Serial Number: {product.serialNumber}</p>
@@ -156,8 +160,10 @@ console.log('Data: ', data);
                                     <p>Manual: {product.manual}</p>
                                     <p>Installation Notes: {product.installationNotes}</p>
                                     <p>Installed By: {product.installedBy}</p>
-                                   
-                                </Card.Body>
+                                   </Card.Body>
+                                   <div className="delete-button-container">
+                                <Button className="delete-button" onClick={() => handleDeleteProduct(product._id)}>Delete</Button>
+                                </div>
                             </Card>  
                             )) : Array.from({ length: 3 }).map((_, index) => (
                             <Card key={index} className="mb-3 h-100 product-spec-card flex-grow-1">
