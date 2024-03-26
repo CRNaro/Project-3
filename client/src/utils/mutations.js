@@ -38,18 +38,44 @@ mutation Mutation($firstName: String!, $lastName: String!, $phoneNumber: Float!,
 }
 `
 export const UPDATE_CUSTOMER_NOTES = gql`
-  mutation UpdateCustomerNotes($id: ID!, $customerNotes: String!) {
-    updateCustomerNotes(id: $id, customerNotes: $customerNotes) {
-      _id
+  mutation Mutation($customerId: String!, $customerNotes: String!) {
+    saveNote(customerId: $customerId, customerNotes: $customerNotes) {
       customerNotes
     }
   }
 `;
 
-export const SAVE_NOTE = gql`
-  mutation Mutation($customerId: String!, $customerNotes: String!) {
-    saveNote(customerId: $customerId, customerNotes: $customerNotes) {
+export const ADD_PRODUCT = gql`
+  mutation Mutation($customerId: String!, $name: String, $manufacturer: String, $serialNumber: String, $modelNumber: String) {
+    addProduct(customerId: $customerId, name: $name, manufacturer: $manufacturer, serialNumber: $serialNumber, modelNumber: $modelNumber) {
+      _id
+      firstName
+      lastName
+      phoneNumber
+      email
       customerNotes
+      products {
+        _id
+        name
+        manufacturer
+        serialNumber
+        modelNumber
+        installDate
+        warrantyDuration
+        cost
+        manual
+        installationNotes
+        installedBy
+      }
+      parts {
+        _id
+        name
+        partNumber
+        cost
+        installDate
+        warrantyDuration
+        installedBy
+      }
     }
   }
 `;
