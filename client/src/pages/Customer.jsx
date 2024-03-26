@@ -1,206 +1,316 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
-import { Container, Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
-import '../styles/Customer.css';
-import '../styles/Home.css';
-import Auth from '../utils/auth';
-import { useLazyQuery, useMutation  } from '@apollo/client';
-import { customerInfo } from '../utils/queries';
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Modal,
+  Form,
+} from "react-bootstrap";
+import "../styles/Customer.css";
+import "../styles/Home.css";
+import Auth from "../utils/auth";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { customerInfo } from "../utils/queries";
 // notes saver
-import { UPDATE_CUSTOMER_NOTES } from '../utils/mutations';
-import { ADD_PRODUCT } from '../utils/mutations';
-import { DELETE_PRODUCT } from '../utils/mutations';
+import { UPDATE_CUSTOMER_NOTES } from "../utils/mutations";
+import { ADD_PRODUCT } from "../utils/mutations";
+import { DELETE_PRODUCT } from "../utils/mutations";
 
 function Customer() {
-    //const [showModal, setShowModal] = useState(false);
-    // show search results
-    const [showSearchResults, setShowSearchResults] = useState([]);
-    // notes saver
-const [updateCustomerNotes] = useMutation(UPDATE_CUSTOMER_NOTES);
-const [customerNote, setCustomerNotes] = useState('');
+  //const [showModal, setShowModal] = useState(false);
+  // show search results
+  const [showSearchResults, setShowSearchResults] = useState([]);
+  // notes saver
+  const [updateCustomerNotes] = useMutation(UPDATE_CUSTOMER_NOTES);
+  const [customerNote, setCustomerNotes] = useState("");
 
-const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
 
-const [customerSearch, { loading, data }] = useLazyQuery (customerInfo);
+  const [customerSearch, { loading, data }] = useLazyQuery(customerInfo);
 
-const [addProduct] = useMutation(ADD_PRODUCT);
+  const [addProduct, { data: addProductData }] = useMutation(ADD_PRODUCT);
 
-const handleClearCustomer = () => {
+  const [deleteProduct] = useMutation(DELETE_PRODUCT);
+
+  const handleClearCustomer = () => {
     setSelectedCustomer(null);
     setShowSearchResults([]);
-    setCustomerNotes('');
-}
+    setCustomerNotes("");
+  };
 
-// notes saver
-const handleSaveNotes = async (event) => {
+  // notes saver
+  const handleSaveNotes = async (event) => {
     event.preventDefault();
-    const customerId = selectedCustomer?._id
-    const customerNotes = customerNote
-    const { data: userData } = await updateCustomerNotes({
-        variables: { customerNotes , customerId },
+    const customerId = selectedCustomer?._id;
+    const customerNotes = customerNote;
+
+    // Update the state
+    setCustomerNotes(customerNotes);
+    console.log("New note:", customerNotes);
+
+    const { data: updatedData } = await updateCustomerNotes({
+      variables: { customerNotes, customerId },
     });
-    if (updatedData) {
-        setCustomerNotes(updatedData.updateCustomerNotes.customerNotes);
+
+    // If the mutation fails, revert the state
+    if (!updatedData || !updatedData.updateCustomerNotes) {
+      setCustomerNotes(prevNotes);
     }
-};
+  };
 
-    //     const handleOpenModal = () => {
-    //     setShowModal(true);
-    // };
-    // const handleCloseModal = () => {
-    //     setShowModal(false);
-    // }
-    const handleFormSubmit = async (event) => {
-        event.preventDefault();
-        const customerIdentifier = event.target.elements.formBasicEmail.value;
-        console.log('submit form with identifier: ',customerIdentifier);
-        const { data } = await customerSearch({ variables: { email: customerIdentifier, lastName: customerIdentifier } });
-        console.log('Form submitted');
-        //const customerInfo = Array.isArray(data.customerInfo) ? data.customerInfo[0] : [data.customerInfo];
-        setShowSearchResults(data.customerInfo);
-}
-
-const handleAddProduct = async (event) => {
+  //     const handleOpenModal = () => {
+  //     setShowModal(true);
+  // };
+  // const handleCloseModal = () => {
+  //     setShowModal(false);
+  // }
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
-    const productData = {
-        name: 'Product Name',
-        manufacturer: 'Product Manufacturer',
-        serialNumber: 'Product Serial Number',
-        modelNumber: 'Product Model Number',
-    };
-    const { data: productDataResult } = await addProduct({ variables: { ...productData, customerId: selectedCustomer._id} });
-    
-if (productDataResult) {
-    setSelectedCustomer(productDataResult.addProduct);
-} else {
-    console.log('Error adding product');
-}
-};
+    const customerIdentifier = event.target.elements.formBasicEmail.value;
+    console.log("submit form with identifier: ", customerIdentifier);
+    const { data } = await customerSearch({
+      variables: { email: customerIdentifier, lastName: customerIdentifier },
+    });
+    console.log("Form submitted");
+    //const customerInfo = Array.isArray(data.customerInfo) ? data.customerInfo[0] : [data.customerInfo];
+    setShowSearchResults(data.customerInfo);
+  };
 
-console.log('Data: ', data);
-    // example of how to call lazyquery
-//     <div>
-//     {data?.dog && <img src={data.dog.displayImage} />}
-//     <button onClick={() => customerSearch({ variables: { email: 'test1@email.com' } })}>
-//       Click me!
-//     </button>
-//   </div>Customer Notes goes here
-    const userData = data?.customerInfo || {};
-    console.log(userData);
+  const handleAddProduct = async (event) => {
+    event.preventDefault();
+    const { data: addProductDataResult } = await addProduct({
+      variables: {
+        customerId: selectedCustomer._id,
+        name: "New Product",
+        manufacturer: "New Manufacturer",
+        serialNumber: "New Serial Number",
+        modelNumber: "New Model Number",
+        installDate: new Date(),
+        warrantyDuration: "New Warranty Duration",
+        cost: "New Cost",
+        manual: "New Manual",
+        installationNotes: "New Installation Notes",
+        installedBy: "New Installed By",
+      },
+    });
+    console.log("adding product", addProductDataResult);
+    if (addProductDataResult) {
+      setSelectedCustomer((prevState) => ({
+        ...prevState,
+        products: [
+          ...prevState.products,
+          addProductDataResult.addProduct.products[0],
+        ],
+      }));
+    } else {
+      console.log("Error adding product");
+    }
+  };
 
-    if (loading) {
-        return <h2>LOADING...</h2>;
-      }
+  const handleDeleteProduct = async (event, productId) => {
+    event.preventDefault();
+    const { data: deleteProductData } = await deleteProduct({
+      variables: { customerId: selectedCustomer._id, productId },
+    });
 
-      return ( 
-        <>
+    if (deleteProductData) {
+      setSelectedCustomer((prevState) => ({
+        ...prevState,
+        products: prevState.products.filter(
+          (product) => product._id !== productId
+        ),
+      }));
+    } else {
+      console.log("Error deleting product");
+    }
+  };
 
-        <Container fluid className="vh-100  d-flex flex-column mb-6">
-            <Row className="customer-row flex-grow-1 d-flex-1">
-               
-                <Col className="d-flex flex-column">
-                    <Row className="mb-3">
-                        <Col md={8}>
-                            <Card className="w-100 h-100 mb-3 customer-info-card flex-grow-1">
-                                <Card.Body> 
-                                <Card.Title>Customer Information</Card.Title>
-                                    <div className="d-flex justify-content-start">
-                                    <Form onSubmit={handleFormSubmit}>
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                <Form.Label>Enter Search</Form.Label>
-                                                <Form.Control type="text" placeholder="Last name or email" />
-                                            </Form.Group>
-                                            <Button className="submit-button" variant="primary" type="submit">
-                                                Submit
-                                            </Button>
-                                            <Button className="clear-customer-button" variant="secondary" onClick={handleClearCustomer}>
-                                            Clear Customer
-                                            </Button>
-                                        </Form>
-                                        {showSearchResults && (
-                                            <div key={showSearchResults._id} style={{ display: 'flex', flexDirection: 'row', gap: '10px', alignItems: 'center'}}>
-                                                <Button variant="link" className="name-button" 
-                                                onClick={() => {setSelectedCustomer(showSearchResults); setShowSearchResults(null);}}>
-                                                {showSearchResults.firstName} {showSearchResults.lastName}</Button>
-                                                <p>{showSearchResults.phoneNumber}</p>
-                                                <p>{showSearchResults.email}</p> 
-                                            </div>
-                                        )}
-                                    </div>
-                                   <Card.Subtitle className="search-results">
-                                     <div>Name: {selectedCustomer?.firstName} {selectedCustomer?.lastName}</div>
-                                     <div>Phone: {selectedCustomer?.phoneNumber}</div>
-                                     <div>Email: {selectedCustomer?.email}</div>
-                                     </Card.Subtitle>
-                                     <Button className="add-product-button" variant="primary" onClick={handleAddProduct}>    
-                                        Add Product
-                                     </Button>
-                                </Card.Body>
-                               
-                            </Card>
-                        </Col>
-                        <Col md={4}>
-                            <Card className="w-100 mb-3 h-100 customer-notes-card flex-grow-1">
-                                <Card.Header>
-                                    <Button variant="link" onClick={() => {/*expand/collapse logic here*/}}>
-                                        Expand</Button>
-                                </Card.Header>
-                                <Card.Body className="mb-3">
-                                    <Card.Title>Customer Notes</Card.Title>
-                                    <Card.Text>
-                                    Notes: {selectedCustomer?.customerNotes}
-                                    </Card.Text>
-                                    <textarea value={customerNote} onChange={(e) => 
-                                        setCustomerNotes(e.target.value)}></textarea>
-                                        <button onClick={handleSaveNotes}>Save Notes</button>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                    <Row className="product-row flex-grow-1 d-flex-1">
-                        <Col md={6} className="d-flex flex-column">
-                        {selectedCustomer && (selectedCustomer?.products?.length > 0 ? 
-                            selectedCustomer.products.map((product) => (
-                            <Card key={product._id}className="mb-3 h-100 product-spec-card flex-grow-1">
-                               
-                                <Card.Body className="search-results">
-                                    <Card.Title>Product Owned</Card.Title>
-                                    <p>Product: {product.manufacturer}</p> 
-                                    <p>Model Number: {product.modelNumber}</p>
-                                    <p>Serial Number: {product.serialNumber}</p>
-                                    <p>Install Date: {product.installDate}</p>
-                                    <p>Warranty Duration: {product.warrantyDuration}</p>
-                                    <p>Cost: {product.cost}</p>
-                                    <p>Manual: {product.manual}</p>
-                                    <p>Installation Notes: {product.installationNotes}</p>
-                                    <p>Installed By: {product.installedBy}</p>
-                                   </Card.Body>
-                                   <div className="delete-button-container">
-                                <Button className="delete-button" onClick={() => handleDeleteProduct(product._id)}>Delete</Button>
-                                </div>
-                            </Card>  
-                            )) : Array.from({ length: 3 }).map((_, index) => (
-                            <Card key={index} className="mb-3 h-100 product-spec-card flex-grow-1">
-                                <Card.Body>
-                                    <Card.Title>Product Owned</Card.Title>
-                                    <Card.Text>
-                                    Product:
-                                    Serial Number:
-                                    Install Date:
-                                    Warranty Duration:
-                                    Cost:
-                                    Manual:
-                                    Installation Notes:
-                                    Installed By:
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                            )
-                            ))}
-                        </Col>
-                        {/* CRN May Not need */}
-                        {/* <Col md={6} className="d-flex flex-column">
+  console.log("Data: ", data);
+  // example of how to call lazyquery
+  //     <div>
+  //     {data?.dog && <img src={data.dog.displayImage} />}
+  //     <button onClick={() => customerSearch({ variables: { email: 'test1@email.com' } })}>
+  //       Click me!
+  //     </button>
+  //   </div>Customer Notes goes here
+  const userData = data?.customerInfo || {};
+  console.log(userData);
+
+  if (loading) {
+    return <h2>LOADING...</h2>;
+  }
+
+  return (
+    <>
+      <Container fluid className="vh-100  d-flex flex-column mb-6">
+        <Row className="customer-row flex-grow-1 d-flex-1">
+          <Col className="d-flex flex-column">
+            <Row className="mb-3">
+              <Col md={8}>
+                <Card className="w-100 h-100 mb-3 customer-info-card flex-grow-1">
+                  <Card.Body>
+                    <Card.Title>Customer Information</Card.Title>
+                    <div className="d-flex justify-content-start">
+                      <Form onSubmit={handleFormSubmit}>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                          <Form.Label>Enter Search</Form.Label>
+                          <Form.Control
+                            type="text"
+                            placeholder="Last name or email"
+                          />
+                        </Form.Group>
+                        <Button
+                          className="submit-button"
+                          variant="primary"
+                          type="submit"
+                        >
+                          Submit
+                        </Button>
+                        <Button
+                          className="clear-customer-button"
+                          variant="secondary"
+                          onClick={handleClearCustomer}
+                        >
+                          Clear Customer
+                        </Button>
+                      </Form>
+                      {showSearchResults && (
+                        <div
+                          key={showSearchResults._id}
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            gap: "10px",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Button
+                            variant="link"
+                            className="name-button"
+                            onClick={() => {
+                              setSelectedCustomer(showSearchResults);
+                              setShowSearchResults(null);
+                            }}
+                          >
+                            {showSearchResults.firstName}{" "}
+                            {showSearchResults.lastName}
+                          </Button>
+                          <p>{showSearchResults.phoneNumber}</p>
+                          <p>{showSearchResults.email}</p>
+                        </div>
+                      )}
+                    </div>
+                    <Card.Subtitle className="search-results">
+                      <div>
+                        Name: {selectedCustomer?.firstName}{" "}
+                        {selectedCustomer?.lastName}
+                      </div>
+                      <div>Phone: {selectedCustomer?.phoneNumber}</div>
+                      <div>Email: {selectedCustomer?.email}</div>
+                    </Card.Subtitle>
+                    <Button
+                      className="add-product-button"
+                      variant="primary"
+                      onClick={handleAddProduct}
+                    >
+                      Add Product
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={4}>
+                <Card className="w-100 mb-3 h-100 customer-notes-card flex-grow-1">
+                  <Card.Header>
+                    <Button
+                      variant="link"
+                      onClick={() => {
+                        /*expand/collapse logic here*/
+                      }}
+                    >
+                      Expand
+                    </Button>
+                  </Card.Header>
+                  <Card.Body className="mb-3">
+                    <Card.Title>Customer Notes</Card.Title>
+                    <div>
+                      Notes:
+                      <div
+                        contentEditable
+                        suppressContentEditableWarning
+                        onBlur={(e) => {
+                          if (!e.target.innerText.trim()) {
+                            e.target.innerText = "Type your note here...";
+                          }
+                          setCustomerNotes(e.target.innerText);
+                        }}
+                        onFocus={(e) => {
+                          if (e.target.innerText === "Type your note here...") {
+                            e.target.innerText = "";
+                          }
+                        }}
+                      >
+                        {selectedCustomer?.customerNotes ||
+                          "Type your note here..."}
+                      </div>
+                    </div>
+                    <button className="save-note-button" onClick={handleSaveNotes}>Save Notes</button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+            <Row className="product-row flex-grow-1 d-flex-1">
+              <Col md={6} className="d-flex flex-column">
+                {selectedCustomer &&
+                  (selectedCustomer?.products?.length > 0
+                    ? selectedCustomer.products.map((product) => (
+                        <Card
+                          key={product._id}
+                          className="mb-3 h-100 product-spec-card flex-grow-1"
+                        >
+                          <Card.Body className="search-results">
+                            <Card.Title>Product Owned</Card.Title>
+                            <p>Product: {product.manufacturer}</p>
+                            <p>Model Number: {product.modelNumber}</p>
+                            <p>Serial Number: {product.serialNumber}</p>
+                            <p>Install Date: {product.installDate}</p>
+                            <p>Warranty Duration: {product.warrantyDuration}</p>
+                            <p>Cost: {product.cost}</p>
+                            <p>Manual: {product.manual}</p>
+                            <p>
+                              Installation Notes: {product.installationNotes}
+                            </p>
+                            <p>Installed By: {product.installedBy}</p>
+                          </Card.Body>
+                          <div className="delete-button-container">
+                            <Button
+                              className="delete-button"
+                              onClick={() =>
+                                handleDeleteProduct(event, product._id)
+                              }
+                            >
+                              Delete
+                            </Button>
+                          </div>
+                        </Card>
+                      ))
+                    : Array.from({ length: 1 }).map((_, index) => (
+                        <Card
+                          key={index}
+                          className="mb-3 h-100 product-spec-card flex-grow-1"
+                        >
+                          <Card.Body>
+                            <Card.Title>Product Owned</Card.Title>
+                            <Card.Text>No Product Owned</Card.Text>
+                          </Card.Body>
+                        </Card>
+                      )))}
+              </Col>
+              {/* CRN May Not need */}
+              {/* <Col md={6} className="d-flex flex-column">
                             {data?.customerInfo?.parts.map((part, index) => (
                             <Card key={part._id}className="mb-3 h-100 product-info-card flex-grow-1">
                                 <Card.Body>
@@ -217,11 +327,12 @@ console.log('Data: ', data);
                             </Card>
                             ))}
                         </Col> */}
-                    </Row>  
-                </Col>
             </Row>
-        </Container>
-        {/* <Modal show={showModal} onHide={handleCloseModal}>
+          </Col>
+        </Row>
+      </Container>
+
+      {/* <Modal show={showModal} onHide={handleCloseModal}>
             <Modal.Header closeButton>
                 <Modal.Title>Find Customer</Modal.Title>
             </Modal.Header>
@@ -244,8 +355,8 @@ console.log('Data: ', data);
                 )}
             </Modal.Body>
         </Modal> */}
-        </> 
-    );
+    </>
+  );
 }
 
 export default Customer;

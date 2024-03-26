@@ -2,6 +2,7 @@ const { Employee, Customer } = require('../models');
 
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
+const { Types } = require('mongoose');
 
 const resolvers = {
   Query: {
@@ -67,7 +68,7 @@ const resolvers = {
           },
           {
             $addToSet: {
-              products: { name, manufacturer, serialNumber, modelNumber, installDate, warrantyDuration, cost, manual, installationNotes, installedBy, },
+              products: { _id: new Types.ObjectId(),name, manufacturer, serialNumber, modelNumber, installDate, warrantyDuration, cost, manual, installationNotes, installedBy, },
             },
           },
           {
@@ -91,16 +92,17 @@ const resolvers = {
       throw new AuthenticationError('You need to be logged in!');
     },
     saveNote: async (parent, { customerNotes, customerId }, context) => {
-      if (context.user) {
-        return Customer.findByIdAndUpdate({ _id: customerId }, { customerNotes: customerNotes, },
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
-      }
-      throw AuthenticationError;
-      ('You need to be logged in!');
+        if (context.user) {
+          return Customer.findByIdAndUpdate(
+            { _id: customerId }, 
+            { customerNotes: customerNotes },
+            {
+              new: true,
+              runValidators: true,
+            }
+          );
+        }
+        throw new AuthenticationError('You need to be logged in!');
     },
     // findCustomer: async (parent, { customerId }, context) => {
     //     if (context.user) {
