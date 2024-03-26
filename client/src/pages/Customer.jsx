@@ -9,6 +9,7 @@ import { useLazyQuery, useMutation  } from '@apollo/client';
 import { customerInfo } from '../utils/queries';
 // notes saver
 import { UPDATE_CUSTOMER_NOTES } from '../utils/mutations';
+import { ADD_PRODUCT } from '../utils/mutations';
 
 
 
@@ -18,7 +19,7 @@ function Customer() {
     const [showSearchResults, setShowSearchResults] = useState([]);
     // notes saver
 const [updateCustomerNotes] = useMutation(UPDATE_CUSTOMER_NOTES);
-const [customerNotes, setCustomerNotes] = useState('');
+const [customerNote, setCustomerNotes] = useState('');
 
 const [selectedCustomer, setSelectedCustomer] = useState(null);
 
@@ -33,8 +34,10 @@ const handleClearCustomer = () => {
 // notes saver
 const handleSaveNotes = async (event) => {
     event.preventDefault();
+    const customerId = selectedCustomer?._id
+    const customerNotes = customerNote
     const { data: userData } = await updateCustomerNotes({
-        variables: { ...customerNotes,  },
+        variables: { customerNotes , customerId },
     });
     if (updatedData) {
         setCustomerNotes(updatedData.updateCustomerNotes.customerNotes);
@@ -129,7 +132,7 @@ console.log('Data: ', data);
                                     <Card.Text>
                                     Notes: {selectedCustomer?.customerNotes}
                                     </Card.Text>
-                                    <textarea value={customerNotes} onChange={(e) => 
+                                    <textarea value={customerNote} onChange={(e) => 
                                         setCustomerNotes(e.target.value)}></textarea>
                                         <button onClick={handleSaveNotes}>Save Notes</button>
                                 </Card.Body>
