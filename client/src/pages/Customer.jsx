@@ -26,6 +26,9 @@ const [customerSearch, { loading, data }] = useLazyQuery (customerInfo);
 
 const [addProduct] = useMutation(ADD_PRODUCT);
 
+const [deleteProduct] = useMutation(DELETE_PRODUCT);
+
+
 const handleClearCustomer = () => {
     setSelectedCustomer(null);
     setShowSearchResults([]);
@@ -69,13 +72,27 @@ const handleAddProduct = async (event) => {
         serialNumber: 'Product Serial Number',
         modelNumber: 'Product Model Number',
     };
-    const { data: productDataResult } = await addProduct({ variables: { ...productData, customerId: selectedCustomer._id} });
     
-if (productDataResult) {
+    if (productDataResult) {
     setSelectedCustomer(productDataResult.addProduct);
 } else {
     console.log('Error adding product');
 }
+};
+
+const handleDeleteProduct = async (event, productId) => {
+    event.preventDefault();
+    const {data: deleteProductData} = await deleteProduct({ variables: { customerId: selectedCustomer._id, productId } });
+
+    if (deleteProductData) {
+        setSelectedCustomer(prevState => ({
+            ...prevState,            
+            products: prevState.products.filter(product => product._id !== productId)
+            }));
+           
+    } else {
+        console.log('Error deleting product');
+    }
 };
 
 console.log('Data: ', data);
@@ -177,10 +194,10 @@ console.log('Data: ', data);
                                     <p>Installed By: {product.installedBy}</p>
                                    </Card.Body>
                                    <div className="delete-button-container">
-                                <Button className="delete-button" onClick={() => handleDeleteProduct(product._id)}>Delete</Button>
+                                <Button className="delete-button" onClick={() => handleDeleteProduct(event, product._id)}>Delete</Button>
                                 </div>
                             </Card>  
-                            )) : Array.from({ length: 3 }).map((_, index) => (
+                            )) : Array.from({ length: 1 }).map((_, index) => (
                             <Card key={index} className="mb-3 h-100 product-spec-card flex-grow-1">
                                 <Card.Body>
                                     <Card.Title>Product Owned</Card.Title>
@@ -221,6 +238,8 @@ console.log('Data: ', data);
                 </Col>
             </Row>
         </Container>
+   
+
         {/* <Modal show={showModal} onHide={handleCloseModal}>
             <Modal.Header closeButton>
                 <Modal.Title>Find Customer</Modal.Title>
